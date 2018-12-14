@@ -7,12 +7,12 @@ char    [_]
 %%
     /* rules */
 
-[\t\n]                                              ;
-int|float|double                                    return TYPE;        /* array types */
-{digit}+                                            return IDX;         /* array indexes */
-{digit}+(\.{digit})?                                return NUM;         /* any number (integer, double, float) */
-{alpha}({alpha}|{digit}|_)*({alpha}|{digit})+\S     return ID;          /* array identifier (naming) */
-.                                                   return yytext[0];   /* any other character */
+[ \t\n]                                                 ;
+int|float|double                                        return TYPE;        /* array types */
+{digit}+                                                return NUM;         /* array indexes */
+{digit}+(\.?{digit})+                                   return DECIMAL;         /* any number (integer, double, float) */
+{alpha}(({alpha}|{digit}|{char})*({alpha}|{digit})+)*   return ID;          /* array identifier (naming) */
+.                                                       return yytext[0];   /* any other character */
 
 %%
     /* subroutines */

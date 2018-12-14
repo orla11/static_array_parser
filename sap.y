@@ -1,9 +1,15 @@
 %{
     #include <stdio.h>
     #include <stdlib.h>
+    
+
+    extern int yylex();
+    void yyerror(char *msg);
+
+
 %}
 
-%token TYPE NUM IDX IDX
+%token TYPE NUM ID DECIMAL
 
 %right '='
 %left '+' '-'
@@ -11,18 +17,19 @@
 
 %%
 
-S:          DEF { printf("Input accepted\n"); exit(0); }
-DEF:        TYPE MARRAY;
-MARRAY:     MARRAY ',' ARRAY | ARRAY | ;
-ARRAY:      ID '[' IDX ']' | ;
-E:          ARRAY '=' E 
-            | E '-' E 
+S:          S DEF | DEF
+DEF:        TYPE MARRAY ';' | EXPR ';';
+MARRAY:     MARRAY ',' ARRAY | ARRAY;
+EXPR:       ARRAY '=' E 
+E:          E '-' E 
             | E '+' E 
             | E '*' E 
             | E '/' E 
             | ARRAY
             | NUM
+            | DECIMAL
             | ID;
+ARRAY:      ID '[' NUM ']'; 
 
 %%
 
