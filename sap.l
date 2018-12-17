@@ -1,3 +1,6 @@
+%{
+    #include "sap.tab.h"
+%}    
     /* definitions */
 
 alpha   [A-Za-z]
@@ -10,7 +13,7 @@ char    [_]
 [ \t\n]                                                 ;
 int|float|double                                        return TYPE;        /* array types */
 {digit}+                                                return NUM;         /* array indexes */
-{digit}+(\.?{digit})+                                   return DECIMAL;         /* any number (integer, double, float) */
+{digit}+(\.?{digit})+                                   return DECIMAL;     /* any number (integer, double, float) */
 {alpha}(({alpha}|{digit}|{char})*({alpha}|{digit})+)*   return ID;          /* array identifier (naming) */
 .                                                       return yytext[0];   /* any other character */
 
