@@ -43,8 +43,8 @@ E:          E '-' E          { $$ = $1 - $3 }
             | E '/' E        { $$ = $1 / $3 }
             | ID '[' NUM ']' { $$ = sym[$1+$3] }
             | NUM
-            | DECIMAL
-            | ID;
+            | DECIMAL;
+            
 //ARRAY:      ID '[' NUM ']' { sym[$1] };
 
 %%
