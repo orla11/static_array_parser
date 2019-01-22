@@ -1,4 +1,5 @@
 %{
+    #include "y.tab.h"
     int input_length;
 %}    
     /* definitions */
@@ -12,9 +13,12 @@ char    [_]
 
 [\t\n]                                                 ;
 int|float|double                                       input_length += yyleng; return TYPE;        /* array types */
-{digit}+                                               input_length += yyleng; return NUM;         /* array indexes */
-{digit}+(\.?{digit})+                                  input_length += yyleng; return DECIMAL;     /* any number (integer, double, float) */
-{alpha}(({alpha}|{digit}|{char})*({alpha}|{digit})+)*  input_length += yyleng; return ID;          /* array identifier (naming) */
+{digit}+                                               input_length += yyleng; { yyval = atoi(*yytext); return NUM; } /* array indexes */
+{digit}+(\.?{digit})+                                  input_length += yyleng; { yyval = atof(*yytext); 
+                                                                                 if(yyval == (int)yyval) { yyval = (int)yyval; }
+                                                                                 return DECIMAL; } /* any number (integer, double, float) */
+{alpha}(({alpha}|{digit}|{char})*({alpha}|{digit})+)*  input_length += yyleng; { yylval = *yytext - 'a'; 
+                                                                                 return ID; } /* array identifier (naming) */
 "["                                                    input_length += yyleng; return yytext[0];
 "]"                                                    input_length += yyleng; return yytext[0];
 " "                                                    input_length += yyleng;

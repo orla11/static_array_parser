@@ -3,6 +3,7 @@
     #include <stdlib.h>
     #include <string.h>
 
+    // MAX_LEN string for banner
     #define MAX_LEN 256
 
     extern int yylex();
@@ -19,21 +20,32 @@
 %left '+' '-'
 %left '*' '/'
 
+%{
+    // defining symbol table dimension
+    int sym[100];
+}%
+
 %%
 
-S:          S DEF { emoji(1,0); } | DEF { emoji(1,0); };              
-DEF:        TYPE MARRAY ';' | EXPR ';';
-MARRAY:     MARRAY ',' ARRAY | ARRAY;
-EXPR:       ARRAY '=' E;
-E:          E '-' E 
-            | E '+' E 
-            | E '*' E 
-            | E '/' E 
-            | ARRAY
+S:          S DEF { emoji(1,0); } | DEF { emoji(1,0); };      
+
+DEF:        TYPE MARRAY ';' 
+            | EXPR ';';
+
+MARRAY:     MARRAY ',' ID '[' NUM ']' 
+            | ID '[' NUM ']';
+
+EXPR:       ID '[' NUM ']' '=' E { sym[$1+$3] = $6 };
+
+E:          E '-' E          { $$ = $1 - $3 }
+            | E '+' E        { $$ = $1 + $3 }
+            | E '*' E        { $$ = $1 * $3 }
+            | E '/' E        { $$ = $1 / $3 }
+            | ID '[' NUM ']' { $$ = sym[$1+$3] }
             | NUM
             | DECIMAL
             | ID;
-ARRAY:      ID '[' NUM ']';
+//ARRAY:      ID '[' NUM ']' { sym[$1] };
 
 %%
 
