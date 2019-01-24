@@ -26,7 +26,7 @@
 
 %%
 
-P:          E { printf("%d\n", $1 ); } | EXPR { emoji(1,0); } ;     
+P:          P E '\n' { printf("%d\n", $1 ); } | P DEF { emoji(1,0); } | '\n' | ;
 
 DEF:        TYPE MARRAY ';' 
             | EXPR ';';
@@ -34,7 +34,8 @@ DEF:        TYPE MARRAY ';'
 MARRAY:     MARRAY ',' ID '[' NUM ']' 
             | ID '[' NUM ']';
 
-EXPR:       ID '[' NUM ']' '=' DECIMAL ';' | ID '[' NUM ']' '=' NUM ';' { sym[(int)(floor(((($1+$3) - 0)/100)))] = $6 };
+EXPR:       ID '[' NUM ']' '=' DECIMAL { sym[(int)(floor(((($1+$3) - 0)/100)))] = $6 }
+            | ID '[' NUM ']' '=' NUM   { sym[(int)(floor(((($1+$3) - 0)/100)))] = $6 };
 
 E:          E '-' E          { $$ = $1 - $3 }
             | E '+' E        { $$ = $1 + $3 }
@@ -51,6 +52,7 @@ E:          E '-' E          { $$ = $1 - $3 }
 int main(void){
     banner();
     yyparse();
+    return 0;
 }
 
 void yyerror(const char *msg){

@@ -24,7 +24,7 @@ int|float|double                                       input_length += yyleng; r
 "]"                                                    input_length += yyleng; return yytext[0];
 ";"                                                    input_length += yyleng; return yytext[0];
 ","                                                    input_length += yyleng; return yytext[0];
-.                                                      yyerror("invalid character");                           /* any other character */
+.                                                      return yytext[0];                           /* any other character */
 
 %%
     /* subroutines */
