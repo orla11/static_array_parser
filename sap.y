@@ -2,9 +2,13 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
+    #include <math.h>
 
     // MAX_LEN string for banner
     #define MAX_LEN 256
+
+    // defining symbol table dimension
+    int sym[100];
 
     extern int yylex();
     void yyerror(const char *msg);
@@ -20,14 +24,9 @@
 %left '+' '-'
 %left '*' '/'
 
-%{
-    // defining symbol table dimension
-    int sym[100];
-}%
-
 %%
 
-S:          S DEF { emoji(1,0); } | DEF { emoji(1,0); };      
+P:          E ';' { printf("%d\n", $1 ); } | EXPR ';' { emoji(1,0); } ;     
 
 DEF:        TYPE MARRAY ';' 
             | EXPR ';';
@@ -35,18 +34,16 @@ DEF:        TYPE MARRAY ';'
 MARRAY:     MARRAY ',' ID '[' NUM ']' 
             | ID '[' NUM ']';
 
-EXPR:       ID '[' NUM ']' '=' E { sym[$1+$3] = $6 };
+EXPR:       ID '[' NUM ']' '=' DECIMAL | ID '[' NUM ']' '=' NUM { sym[(int)(floor(((($1+$3) - 0)/100)))] = $6 };
 
 E:          E '-' E          { $$ = $1 - $3 }
             | E '+' E        { $$ = $1 + $3 }
             | E '*' E        { $$ = $1 * $3 }
             | E '/' E        { $$ = $1 / $3 }
-            | ID '[' NUM ']' { $$ = sym[$1+$3] }
+            | ID '[' NUM ']' { $$ = sym[(int)(floor(((($1+$3) - 0)/100)))] }
             | NUM
             | DECIMAL;
             
-//ARRAY:      ID '[' NUM ']' { sym[$1] };
-
 %%
 
 #include "lex.yy.c"

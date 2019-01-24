@@ -8,7 +8,8 @@ case $key in
 	./sap
 	;;
     *)
-	flex sap.l && bison sap.y && gcc -o sap sap.tab.c -ll -ly
+	rm -rf sap
+	flex sap.l && bison -dy sap.y && gcc -o sap sap.tab.c -ll -ly
 	chmod +x sap
 	./sap
 	;;
