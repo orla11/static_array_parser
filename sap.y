@@ -26,7 +26,7 @@
 
 %%
 
-P:          E ';' { printf("%d\n", $1 ); } | EXPR ';' { emoji(1,0); } ;     
+P:          E { printf("%d\n", $1 ); } | EXPR { emoji(1,0); } ;     
 
 DEF:        TYPE MARRAY ';' 
             | EXPR ';';
@@ -34,7 +34,7 @@ DEF:        TYPE MARRAY ';'
 MARRAY:     MARRAY ',' ID '[' NUM ']' 
             | ID '[' NUM ']';
 
-EXPR:       ID '[' NUM ']' '=' DECIMAL | ID '[' NUM ']' '=' NUM { sym[(int)(floor(((($1+$3) - 0)/100)))] = $6 };
+EXPR:       ID '[' NUM ']' '=' DECIMAL ';' | ID '[' NUM ']' '=' NUM ';' { sym[(int)(floor(((($1+$3) - 0)/100)))] = $6 };
 
 E:          E '-' E          { $$ = $1 - $3 }
             | E '+' E        { $$ = $1 + $3 }
@@ -55,7 +55,7 @@ int main(void){
 
 void yyerror(const char *msg){
     const char error[5] = {0xE2, 0x9D, 0x8C, '\0', '\0'};
-    fprintf(stderr, "\a %s %s\n", error, msg);
+    fprintf(stderr, "\a %s %s \n", error, msg);
 }
 
 void banner(void) {
@@ -116,7 +116,7 @@ void emoji(int choice, int divLen){
             break;
         case 1: // Check
             printf("\x1B[F");
-            printf("\x1B[%dC", input_length + 3);
+            printf("\x1B[%dC", input_length + 5);
             printf("%s\n", check);
             input_length = 0;
             break;

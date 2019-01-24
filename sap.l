@@ -12,7 +12,7 @@ char    [_]
     /* rules */
 
 [ \t]                                                  ;
-[-+*=/\n]                                              { return *yytext; }
+[-+*=/\n]                                              input_length += yyleng; return yytext[0];
 int|float|double                                       input_length += yyleng; return TYPE;        /* array types */
 {digit}+                                               input_length += yyleng; { yylval = atoi(yytext); return NUM; } /* array indexes */
 {digit}+(\.?{digit})+                                  input_length += yyleng; { yylval = atof(yytext); 
