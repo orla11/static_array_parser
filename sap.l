@@ -18,11 +18,9 @@ char    [_]
 int|float|double                                       input_length += yyleng; return TYPE;                             /* array types */
 {digit}+                                               input_length += yyleng; { yylval = atoi(yytext); return NUM; }   /* array indexes */
 {digit}+(\.?{digit})+                                  input_length += yyleng; { yylval = atof(yytext); 
-                                                                                 if(yylval == (int)yylval) { yylval = (int)yylval; }
+                                                                                 if(yylval == (int)atof(yytext)) { yylval = (int)yylval; }
                                                                                  return DECIMAL; }                      /* any number (integer, double, float) */
 {alpha}(({alpha}|{digit}|{char})*({alpha}|{digit})+)*  input_length += yyleng; { yylval = *yytext - 'a';
-                                                                                 printf("%d",yylval);
-                                                                                 exit(0);
                                                                                  return ID; }                           /* array identifier (naming) */
 "["                                                    input_length += yyleng; return yytext[0];
 "]"                                                    input_length += yyleng; return yytext[0];

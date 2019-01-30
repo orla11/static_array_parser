@@ -30,19 +30,19 @@ P:          P S '\n'
             |
             ;
 
-S:          DEF { emoji(1,0) } | E { print_result($1) } | ;
+S:          DEF { emoji(1,0); } | E { print_result($1); } | ;
 
 DEF:        TYPE MARRAY ';' | EXPR ';';
 
 MARRAY:     MARRAY ',' ARRAY | ARRAY;
 
-EXPR:       ID '[' NUM ']' '=' E    { sym[(int)(floor(((($1+$3) - 0)/100)))] = $6 };
+EXPR:       ID '[' NUM ']' '=' E    { sym[(int)(floor(((($1+$3) - 0)/100)))] = $6; };
 
-E:          E '-' E          { $$ = $1 - $3 }
-            | E '+' E        { $$ = $1 + $3 }
-            | E '*' E        { $$ = $1 * $3 }
-            | E '/' E        { $$ = $1 / $3 }
-            | ID '[' NUM ']' { $$ = sym[(int)(floor(((($1+$3) - 0)/100)))] }
+E:          E '-' E          { $$ = $1 - $3; }
+            | E '+' E        { $$ = $1 + $3; }
+            | E '*' E        { $$ = $1 * $3; }
+            | E '/' E        { $$ = $1 / $3; }
+            | ID '[' NUM ']' { $$ = sym[(int)(floor(((($1+$3) - 0)/100)))]; }
             | NUM
             | DECIMAL;
 
