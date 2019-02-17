@@ -9,7 +9,7 @@ case $key in
 	;;
     *)
 	rm -rf sap
-	flex sap.l && bison -d sap.y && gcc -o sap sap.tab.c -ll -ly
+	flex sap.l && bison -d sap.y && gcc -o sap sap.tab.c utils.c  -ll -ly
 	chmod +x sap
 	./sap
 	;;
