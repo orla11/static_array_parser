@@ -1,8 +1,7 @@
 # STATIC ARRAY PARSER
 An accademic project realized for the course of Language Processing Technologies made with Flex &amp; Bison.
 
-## ASSIGNMENT:
-----------------------------------------------------------------------------
+## ASSIGNMENT
 Using lex/yacc implement a parser to manage the definition of static arrays.
 Arrays are defined as
 
@@ -22,7 +21,6 @@ c[3] = a[3]*a[2];
 Assume that uninitialised elements are set to 0. The expression on the left
 can only have two operands that can be array elements or constants. Assume
 to use the basic arithmetic operators +,-,*,/
-----------------------------------------------------------------------------
 
 ## Prerequisites:
   - gcc
