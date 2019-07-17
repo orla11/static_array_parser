@@ -8,11 +8,15 @@
 // symbol table, semantic-check utils arrays
 #define MAX_LEN 256
 
+// the function print all errors
+// it has been customized to add the X emoji symbol
 void yyerror(const char *msg){
     const char error[5] = {0xE2, 0x9D, 0x8C, '\0', '\0'};
     fprintf(stderr, "\a %s %s \n", error, msg);
 }
 
+// the function prints the initial banner with
+// the legend and the example of usage
 void banner(void) {
     char *filename = "header.txt";
     FILE *fptr = NULL;
@@ -50,6 +54,8 @@ void banner(void) {
     fclose(fptr);
 }
 
+// the function prints the banner which
+// is stored in a .txt file
 void print_image(FILE *fptr){
     char read_string[MAX_LEN];
 
@@ -58,6 +64,8 @@ void print_image(FILE *fptr){
     }
 }
 
+// the function prints an emoji within a set of
+// different emojis in order to improve the UI
 void emoji(int choice, int divLen){   
 
     const char assignment[5]    =  {0xF0, 0x9F, 0x92, 0xAD, '\0'};
@@ -102,6 +110,8 @@ void emoji(int choice, int divLen){
     }
 }
 
+// the function check the type of the array
+// and then print the number in stdout
 void print_result(){
     emoji(5,0);
 
@@ -121,6 +131,10 @@ void print_result(){
 
 }
 
+// the function check respectively for the 
+// declaration of the array (if the array exists or not)
+// and check if an index specified for an array fall within
+// array declared bounds
 void check(int ref, int index){
     const char error[5] = {0xE2, 0x9D, 0x8C, '\0', '\0'};
     if(def[ref] != 1){
@@ -133,8 +147,12 @@ void check(int ref, int index){
     }
 }
 
+// the function check if the array given from stdin
+// has been already declared or not 
+// (check if an array was previously declared or not)
 void check_double_dec(int ref){
     const char error[5] = {0xE2, 0x9D, 0x8C, '\0', '\0'};
+
     if(dec[ref] == 1){
         printf("\a %s Error: array previously declared.\n", error);
         exit(1);
@@ -143,7 +161,9 @@ void check_double_dec(int ref){
     }
 }
 
-void assign_type(int refs[], char *string){
+// the function check the type parsed by the
+// syntax analyzer and assign it to the respective array
+void assign_type(char *string){
 
     char *int_type = "int";
     char *float_type = "float";
@@ -167,6 +187,8 @@ void assign_type(int refs[], char *string){
 
 }
 
+// the function empty the result array
+// setting it ready for the next result
 void empty_res(){
     res_arr[0] = 0;
     res_arr[1] = 0;

@@ -1,3 +1,4 @@
+/* definitions */
 %{
     #include <stdio.h>
     #include <stdlib.h>
@@ -19,23 +20,24 @@
 %token TYPE NUM ID DECIMAL
 
 %type <stringValue> TYPE
-%type <doubleValue>  DECIMAL
+%type <doubleValue> DECIMAL
 %type <intValue>    NUM
 %type <intValue>    ID    
-%type <doubleValue>  E
+%type <doubleValue> E
 
+/* operator precedence to avoid ambiguous grammar in BNF grammar (rules section) */
 %right '='
 %left '+' '-'
 %left '*' '/'
 
+/* rules */
 %%
-P:          P S '\n'
-            |
-            ;
 
-S:          DEF { emoji(1,0); } | RES { print_result(); empty_res();} | ;
+P:          P S '\n' | ;
 
-DEF:        TYPE MARRAY ';' { assign_type(multiple_defs,$<stringValue>1); }
+S:          OP { emoji(1,0); } | RES { print_result(); empty_res();} | ;
+
+OP:         TYPE MARRAY ';' { assign_type($<stringValue>1); }
             | EXPR ';';
 
 MARRAY:     MARRAY ',' ARRAY { multiple_defs[$<intValue>3] = $<intValue>3; }
@@ -57,7 +59,7 @@ RES:        ID '[' NUM ']'   { check($1,$<intValue>3); res_arr[0] = sym[$1][$<in
 ARRAY:      ID '[' NUM ']'   { check_double_dec($<intValue>1); def[$1] = 1; bounds[$1] = $<intValue>3; $<intValue>$ = $1; };
             
 %%
-
+/* subroutines */
 #include "lex.yy.c"
 
 int main(void){
