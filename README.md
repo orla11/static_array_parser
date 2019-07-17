@@ -1,7 +1,7 @@
 # STATIC ARRAY PARSER
 An accademic project realized for the course of Language Processing Technologies made with Flex &amp; Bison.
 
-ASSIGNMENT:
+## ASSIGNMENT:
 ----------------------------------------------------------------------------
 Using lex/yacc implement a parser to manage the definition of static arrays.
 Arrays are defined as
