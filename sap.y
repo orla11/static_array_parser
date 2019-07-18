@@ -25,7 +25,7 @@
 %type <intValue>    ID    
 %type <doubleValue> E
 
-/* operator precedence to avoid ambiguous grammar in BNF grammar (rules section) */
+/* operator precedence to avoid ambiguous grammar in BNF-like grammars (rules section) */
 %right '='
 %left '+' '-'
 %left '*' '/'
