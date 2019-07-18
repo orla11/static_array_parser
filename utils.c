@@ -4,9 +4,12 @@
 #include <math.h>
 #include "utils.h"
 
-// MAX_LEN string for banner, 
-// symbol table, semantic-check utils arrays
+// MAX_LEN string for banner
+// and index space
 #define MAX_LEN 256
+
+// Max array_ID space
+#define MAX_SYM 30
 
 // the function print all errors
 // it has been customized to add the X emoji symbol
