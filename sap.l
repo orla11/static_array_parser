@@ -1,12 +1,13 @@
 %{
     #include <stdlib.h>
     #include <stdio.h>
+    #include <string.h>
     #include "sap.tab.h"
 %}
 
     /* definitions */
 
-alpha   [a-z]
+letter  [a-z]
 digit   [0-9]
 char    [_]
 
@@ -19,7 +20,7 @@ char    [_]
 int|float|double                                       { yylval.stringValue = yytext; return TYPE; } /* match array types */
 {digit}+                                               { yylval.intValue = atoi(yytext); return NUM; } /* match array indexes or integers */
 {digit}+(\.?{digit})+                                  { yylval.doubleValue = atof(yytext); return DECIMAL; } /* match any decimal number (double, float) */
-{alpha}                                                { yylval.intValue = *yytext - 'a'; return ID; } /* match array identifier (name) */
+{letter}({letter}|{digit})*                            { yylval.stringValue = strdup(yytext); return ID; } /* match array identifier (name) */
 "["                                                    return yytext[0]; /* match [ */
 "]"                                                    return yytext[0]; /* match ] */
 ";"                                                    return yytext[0]; /* match ; */

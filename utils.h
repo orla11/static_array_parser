@@ -5,10 +5,12 @@
 // and index space
 #define MAX_LEN 256
 // Max array_ID space
-#define MAX_SYM 30
+#define MAX_SYM 256
 
-// defining symbol table
+// defining symbol tables
 float sym[MAX_SYM][MAX_LEN];
+
+char symbol[MAX_SYM][MAX_SYM];
 
 // array to check if input array
 // exists or not
@@ -48,6 +50,8 @@ void banner(void);                  // print banner with instructions
 void print_image(FILE *fptr);       // print big starting banner image
 void print_result();                // print final result of calculations
 void check(int ref, int index);     // check if arrays are defined and/or indexes out of bounds
-void check_double_dec(int ref);     // check if arrays already declared
+void check_double_dec(int ref, char * identifier);     // check if arrays already declared
 void assign_type(char* string);     // assign type to single array
 void empty_res();                   // empty res_array
+void add_to_symbol(char * identifier);
+int  get_index(char * identifier);

@@ -22,7 +22,7 @@
 %type <stringValue> TYPE
 %type <doubleValue> DECIMAL
 %type <intValue>    NUM
-%type <intValue>    ID    
+%type <stringValue> ID    
 %type <doubleValue> E
 
 /* operator precedence to avoid ambiguous grammar in BNF-like grammars (rules section) */
@@ -43,20 +43,20 @@ OP:         TYPE MARRAY ';' { assign_type($<stringValue>1); }
 MARRAY:     MARRAY ',' ARRAY { multiple_defs[$<intValue>3] = $<intValue>3; }
             | ARRAY { multiple_defs[$<intValue>1] = $<intValue>1; };
 
-EXPR:       ID '[' NUM ']' '=' E    { check($1,$<intValue>3); sym[$1][$<intValue>3] = $<doubleValue>6; };     
+EXPR:       ID '[' NUM ']' '=' E    { check(get_index($<stringValue>1),$<intValue>3); sym[get_index($<stringValue>1)][$<intValue>3] = $<doubleValue>6; };     
 
 
 E:          E '-' E          { $$ = $1 - $3; }
             | E '+' E        { $$ = $1 + $3; }
             | E '*' E        { $$ = $1 * $3; }
             | E '/' E        { $$ = $1 / $3; }
-            | ID '[' NUM ']' { check($1,$<intValue>3); $<doubleValue>$ = sym[$1][$<intValue>3]; }
+            | ID '[' NUM ']' { check(get_index($<stringValue>1),$<intValue>3); $<doubleValue>$ = sym[get_index($<stringValue>1)][$<intValue>3]; }
             | NUM            { $$ = (float)$1; }
             | DECIMAL;
 
-RES:        ID '[' NUM ']'   { check($1,$<intValue>3); res_arr[0] = sym[$1][$<intValue>3]; res_arr[1] = $1; }
+RES:        ID '[' NUM ']'   { check(get_index($<stringValue>1),$<intValue>3); res_arr[0] = sym[get_index($<stringValue>1)][$<intValue>3]; res_arr[1] = get_index($<stringValue>1); }
 
-ARRAY:      ID '[' NUM ']'   { check_double_dec($<intValue>1); def[$1] = 1; bounds[$1] = $<intValue>3; $<intValue>$ = $1; };
+ARRAY:      ID '[' NUM ']'   { check_double_dec(get_index($<stringValue>1),$<stringValue>1); def[get_index($<stringValue>1)] = 1; bounds[get_index($<stringValue>1)] = $<intValue>3; $<intValue>$ = get_index($<stringValue>1); };
             
 %%
 /* subroutines */
@@ -64,9 +64,14 @@ ARRAY:      ID '[' NUM ']'   { check_double_dec($<intValue>1); def[$1] = 1; boun
 
 int main(void){
     
-    int i;
+    int i,j;
     for(i=0;i<MAX_LEN;i++){
         multiple_defs[i] = 1111;
+    }
+
+    for(j=0;j<MAX_SYM;j++){
+        const char *line = "octothorpe";
+        strcpy(symbol[j],line);
     }
     
     banner();

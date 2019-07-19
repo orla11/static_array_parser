@@ -9,7 +9,9 @@
 #define MAX_LEN 256
 
 // Max array_ID space
-#define MAX_SYM 30
+#define MAX_SYM 256
+
+int symbol_length = 0;
 
 // the function print all errors
 // it has been customized to add the X emoji symbol
@@ -39,11 +41,12 @@ void banner(void) {
 
     printf("\nExamples: \n\n");
     printf("- Single Definition: \t\t - Array Assignments:\n");
-    printf("\tint a[80]; \t\t \tb[2] = 10;\n");
-    printf("\tdouble c[20]; \t\t \tx[3] = r[2] + 3;\n");
+    printf("\tint pillow[80]; \t\tnightmare[2] = 10;\n");
+    printf("\tdouble sheep[20]; \t\tdreams[3] = sleep[2] + 3;\n");
+    printf(" \t\t \t\t\tblanket[3] = nightmare[3] * pillow[2];\n");
 
-    printf("- Multiple Definition: \t\t \tm[3] = b[3] * x[2];\n");
-    printf("\tfloat x[43], h[10], f[55];\n\n");
+    printf("- Multiple Definition:\n");
+    printf("\tfloat snoring[43], dreams[10], night[55];\n\n");
     emoji(3,21);
 
     printf("\n");
@@ -87,7 +90,7 @@ void emoji(int choice, int divLen){
         case 1: // Check
             printf("\x1B[F");
             //printf("\x1B[%dC", input_length + 5);
-            printf("\x1B[%dC", 40);
+            printf("\x1B[%dC", 45);
             printf("%s\n", checkv2);
             //input_length = 0;
             break;
@@ -105,7 +108,7 @@ void emoji(int choice, int divLen){
         case 5: // Result
             printf("\x1B[F");
             //printf("\x1B[%dC", input_length + 3);
-            printf("\x1B[%dC", 40);
+            printf("\x1B[%dC", 45);
             printf("%s", resultv2);
             printf("\x1B[2C");
             //input_length = 0;
@@ -153,13 +156,13 @@ void check(int ref, int index){
 // the function check if the array given from stdin
 // has been already declared or not 
 // (check if an array was previously declared or not)
-void check_double_dec(int ref){
+void check_double_dec(int ref, char * identifier){
     const char error[5] = {0xE2, 0x9D, 0x8C, '\0', '\0'};
-
     if(dec[ref] == 1){
         printf("\a %s Error: array previously declared.\n", error);
         exit(1);
     }else{
+        add_to_symbol(identifier);
         dec[ref] = 1;
     }
 }
@@ -195,4 +198,30 @@ void assign_type(char *string){
 void empty_res(){
     res_arr[0] = 0;
     res_arr[1] = 0;
+}
+
+void add_to_symbol(char * identifier){
+    const char error[5] = {0xE2, 0x9D, 0x8C, '\0', '\0'};
+    
+    if (symbol_length <= MAX_SYM - 1){
+        strcpy(symbol[symbol_length++], identifier);
+    }else{
+        printf("\a %s Error: sym buffer reach memory limit of 256.\n", error);
+        exit(1);
+    }
+}
+
+int get_index(char * identifier){
+    int found_index;
+
+    found_index = symbol_length;
+
+    for(int i = 0; i<MAX_SYM; i++){
+        if(strcmp(identifier,symbol[i]) == 0){
+            found_index = i;
+            break;
+        }
+    }
+
+    return (int)found_index;
 }
